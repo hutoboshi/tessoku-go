@@ -33,5 +33,4 @@ func main() {
 	}
 
 	fmt.Println(dp[h-1][w-1])
-	fmt.Println(dp)
 }
