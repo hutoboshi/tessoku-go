@@ -33,7 +33,7 @@ func main() {
 	}
 
 	//幅優先探索のためのキューを初期化
-	que := []int{1}
+	que := []int{1}	
 	//訪問済みの頂点を管理するためのマップ
 	visited := make(map[int]bool)
 	visited[1] = true
