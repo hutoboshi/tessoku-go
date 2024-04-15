@@ -25,8 +25,6 @@ func main() {
 	S2 := false
 	S3 := false
 
-	//var t4, t5, t6 rune
-
 	for _, v := range s {
 		if v == t1 && !S2 && !S3 && !S1 {
 			S1 = true

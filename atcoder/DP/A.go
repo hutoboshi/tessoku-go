@@ -11,13 +11,20 @@ import (
 
 const INF = 1 << 60
 
+var buff = make([]byte, 100000)
 var scanner = bufio.NewScanner(os.Stdin)
 
 func main() {
+	// buff := make([]byte, 100000)
+	// scanner.Buffer(buff, 100000)
 	// input1 := inputArrInt()
 	// n := int(input1[0])
 	// arr := inputArrInt()
-	// arrH := arr
+	// arrH := make([]int64, n)
+	// for i := 0; i < n; i++ {
+	// 	arrH[i] = int64(arr[i])
+	// }
+
 	var n int
 	fmt.Scan(&n) // 入力：N
 
@@ -62,14 +69,14 @@ func chmin(a *int64, b int64) bool {
 	return false
 }
 
-func inputArrInt() []int64 {
+func inputArrInt() []int {
+	scanner.Buffer(buff, 100000)
 	scanner.Scan()
-	input := scanner.Text()
-	inputs := strings.Fields(input)
+	inputs := strings.Split(scanner.Text(), " ")
 
-	var ps []int64
-	for _, input2 := range inputs {
-		p, _ := strconv.ParseInt(input2, 10, 64)
+	var ps []int
+	for _, input := range inputs {
+		p, _ := strconv.Atoi(input)
 		ps = append(ps, p)
 	}
 
@@ -77,6 +84,7 @@ func inputArrInt() []int64 {
 }
 
 func inputArrString() []string {
+	scanner.Buffer(buff, 100000)
 	scanner.Scan()
 	input := scanner.Text()
 	inputs := strings.Fields(input)
