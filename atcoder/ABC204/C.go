@@ -118,4 +118,15 @@ func main() {
 	io := NewIo()
 	defer io.Flush()
 
+	n := io.NextInt()
+	m := io.NextInt()
+
+	arrA := make([]int, m)
+	arrB := make([]int, m)
+	for i := 0; i < m; i++ {
+		arrA[i] = io.NextInt()
+		arrB[i] = io.NextInt()
+	}
+
+	fmt.Println(n)
 }
