@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"container/list"
 	"fmt"
 	"os"
 	"strconv"
@@ -113,6 +114,70 @@ func intMax(a, b int) int {
 	return b
 }
 
+// deque
+type Deque struct {
+	list *list.List
+}
+
+func NewDeque() *Deque {
+	return &Deque{
+		list: list.New(),
+	}
+}
+
+func (d *Deque) PushFront(item interface{}) {
+	d.list.PushFront(item)
+}
+
+func (d *Deque) PushBack(item interface{}) {
+	d.list.PushBack(item)
+}
+
+func (d *Deque) PopFront() interface{} {
+	if d.list.Len() == 0 {
+		return nil
+	}
+	front := d.list.Front()
+	d.list.Remove(front)
+	return front.Value
+}
+
+func (d *Deque) PopBack() interface{} {
+	if d.list.Len() == 0 {
+		return nil
+	}
+	back := d.list.Back()
+	d.list.Remove(back)
+	return back.Value
+}
+
+func (d *Deque) Len() int {
+	return d.list.Len()
+}
+
+// 幅優先探索
+func bfs(start int, n int, connect [][]int) int {
+	//訪問済みリスト作成
+	visited := make([]bool, n+1)
+	//訪問済みにする
+	visited[start] = true
+	cnt := 1
+	deque := NewDeque()
+	deque.PushBack(start)
+
+	for deque.Len() > 0 {
+		now_city := deque.PopFront()
+		for _, to_city := range connect[now_city.(int)] {
+			if !visited[to_city] {
+				visited[to_city] = true
+				cnt++
+				deque.PushBack(to_city)
+			}
+		}
+	}
+	return cnt
+}
+
 func main() {
 	//決まり文句
 	io := NewIo()
@@ -128,5 +193,17 @@ func main() {
 		arrB[i] = io.NextInt()
 	}
 
-	fmt.Println(n)
+	connect := make([][]int, n+1)
+
+	for i := 0; i < m; i++ {
+		connect[arrA[i]] = append(connect[arrA[i]], arrB[i])
+	}
+
+	ans := 0
+	for i := 1; i <= n; i++ {
+		ans += bfs(i, n, connect)
+	}
+
+	fmt.Println(ans)
+
 }
