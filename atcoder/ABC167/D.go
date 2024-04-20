@@ -136,7 +136,7 @@ func main() {
 	moveCnt := 0 //移動回数の初期値
 	cycle := 0   //周期の初期値
 
-	//k解移動するループ
+	//k回移動するループ
 	for i := 1; i < 1000001; i++ {
 		moveCnt += 1
 		nowTown = arrA[nowTown] //移動先の街を更新
