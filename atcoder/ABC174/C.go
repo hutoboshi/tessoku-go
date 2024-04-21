@@ -118,4 +118,18 @@ func main() {
 	io := NewIo()
 	defer io.Flush()
 
+	k := io.NextInt()
+
+	amari := 0
+	for i := 1; i <= k; i++ {
+		amari = amari*10 + 7
+
+		if amari%k == 0 {
+			fmt.Println(i)
+			return
+		}
+
+		amari %= k
+	}
+	fmt.Println(-1)
 }
