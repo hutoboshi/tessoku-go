@@ -155,20 +155,74 @@ func (d *Deque) Len() int {
 	return d.list.Len()
 }
 
+// 迷路探索
+func explore(start_gyou, start_retu, h, w int, maze []string) int {
+	//各セルへの最短距離を保持する配列を初期化
+	maze_count := make([][]int, h)
+	for i := 0; i < h; i++ {
+		maze_count[i] = make([]int, w)
+		for j := 0; j < w; j++ {
+			maze_count[i][j] = -1
+		}
+	}
+	maze_count[start_gyou][start_retu] = 0
+
+	//幅優先探索用のキューを初期化し、スタート地点を追加
+	gyou_deque := NewDeque()
+	retu_deque := NewDeque()
+	gyou_deque.PushBack(start_gyou)
+	retu_deque.PushBack(start_retu)
+
+	//上下左右への移動方向を表す配列
+	dirs := [][]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
+
+	//幅優先探索で各セルへの最短距離を計算
+	for gyou_deque.Len() > 0 {
+		now_gyou, now_retu := gyou_deque.PopFront().(int), retu_deque.PopFront().(int)
+		now_count := maze_count[now_gyou][now_retu]
+
+		//上下左右に移動して次のセルを探索
+		for _, dir := range dirs {
+			next_gyou, next_retu := now_gyou+dir[0], now_retu+dir[1]
+			if next_gyou >= 0 && next_gyou < h && next_retu >= 0 && next_retu < w && maze[next_gyou][next_retu] == '.' && maze_count[next_gyou][next_retu] == -1 {
+				//移動可能な迷路内で見探索かる通行可能な場合、距離を更新してキューに追加
+				maze_count[next_gyou][next_retu] = now_count + 1
+				gyou_deque.PushBack(next_gyou)
+				retu_deque.PushBack(next_retu)
+			}
+		}
+	}
+
+	//全てのセルの最短距離を調べて最大距離を求める
+	max_count := 0
+	for _, row := range maze_count {
+		for _, val := range row {
+			max_count = intMax(max_count, val)
+		}
+	}
+
+	return max_count
+}
+
 func main() {
 	//決まり文句
 	io := NewIo()
 	defer io.Flush()
 
-	h:=io.NextInt()
-	w:=io.NextInt()
-	arrS:=make([]string,h)
-	for i:=0;i<h;i++{
-		arrS[i]=io.NextLine()
+	h := io.NextInt()
+	w := io.NextInt()
+	arrS := make([]string, h)
+	for i := 0; i < h; i++ {
+		arrS[i] = io.NextLine()
 	}
 
-	explore:=func(start_gyou,start_retu int)int{
-		maze_count:=make([][]int,h)
-		for 
+	ans := 0
+	for gyou := 0; gyou < h; gyou++ {
+		for retu := 0; retu < w; retu++ {
+			if arrS[gyou][retu] == '.' {
+				ans = intMax(ans, explore(gyou, retu, h, w, arrS))
+			}
+		}
 	}
+	fmt.Println(ans)
 }
