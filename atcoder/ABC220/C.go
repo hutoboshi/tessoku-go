@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"sort"
 	"strconv"
 	"strings"
 )
@@ -114,36 +113,35 @@ func intMax(a, b int) int {
 	return b
 }
 
-/*
-小英字
-小文字の列が決まっていない時に独自の列挙列を作って判定する
-*/
 func main() {
 	//決まり文句
 	io := NewIo()
 	defer io.Flush()
 
-	x := io.Next()
 	n := io.NextInt()
-	arrS := make([]string, n)
+	arrA := make([]int, n)
 	for i := 0; i < n; i++ {
-		arrS[i] = io.Next()
+		arrA[i] = io.NextInt()
+	}
+	x := io.NextInt()
+
+	arrDP := make([]int, n)
+	arrDP[0] = arrA[0]
+	for i := 1; i < n; i++ {
+		arrDP[i] = arrDP[i-1] + arrA[i]
 	}
 
-	//sort.Sliceを使って文字列のスライス（arrS）をソートする比較関数
-	sort.Slice(arrS, func(i, j int) bool {
-		//文字列を先頭から比較
-		for u := 0; u < intMin(len(arrS[i]), len(arrS[j])); u++ {
-			//文字列が異なる場合、文字列xでのそれぞれの文字のインデックスを比較して、順序を決定する
-			if arrS[i][u] != arrS[j][u] {
-				return strings.Index(x, string(arrS[i][u])) < strings.Index(x, string(arrS[j][u]))
-			}
+	ans1 := x / arrDP[n-1]
+	x2 := x % arrDP[n-1]
+
+	ans2 := 0
+	for i, v := range arrDP {
+		if v > x2 {
+			ans2 = i
+			break
 		}
-		//先頭部分が一致する場合、短い方の文字列が先に来るように長さを比較する
-		return len(arrS[i]) < len(arrS[j])
-	})
-
-	for _, v := range arrS {
-		fmt.Println(v)
 	}
+
+	fmt.Println(ans1*n + ans2 + 1)
+
 }
