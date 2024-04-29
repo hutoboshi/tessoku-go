@@ -157,11 +157,9 @@ func main() {
 	s = io.Next()
 	k := io.NextInt()
 
-	l = len(s)         //文字列sの長さを取得する
-	find((1 << l) - 1) //全ての文字を使った状態のフラグを設定して、find関数を呼び出す
-	sort.Strings(res)  //結果を辞書順にソートする
-	fmt.Println(res)
-	res = unique(res) //結果から重複を削除する
-	fmt.Println(res)
+	l = len(s)            //文字列sの長さを取得する
+	find((1 << l) - 1)    //全ての文字を使った状態のフラグを設定して、find関数を呼び出す
+	sort.Strings(res)     //結果を辞書順にソートする
+	res = unique(res)     //結果から重複を削除する
 	fmt.Println(res[k-1]) //k番目の結果を出力する
 }
