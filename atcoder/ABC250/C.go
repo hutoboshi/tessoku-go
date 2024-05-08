@@ -118,4 +118,53 @@ func main() {
 	io := NewIo()
 	defer io.Flush()
 
+	n := io.NextInt()
+	q := io.NextInt()
+
+	arrX := make([]int, q)
+	for i := 0; i < q; i++ {
+		arrX[i] = io.NextInt()
+	}
+
+	//並び替えする配列
+	arrN := make([]int, n)
+	for i := 0; i < n; i++ {
+		arrN[i] = i + 1
+	}
+
+	//並び替え順を記憶するmap
+	mapN := make(map[int]int)
+	for i := 0; i < n; i++ {
+		mapN[i+1] = i
+	}
+
+	//並び替え
+	for _, x := range arrX {
+		pos := mapN[x]
+		if pos == n-1 {
+			tmp := arrN[n-2]
+			//配列を入れ替える
+			arrN[n-1], arrN[n-2] = arrN[n-2], arrN[n-1]
+			//mapを入れ替える
+			mapN[x] = n - 2
+			mapN[tmp] = n - 1
+		} else {
+			tmp := arrN[pos+1]
+			//配列を入れ替える
+			arrN[pos], arrN[pos+1] = arrN[pos+1], arrN[pos]
+			//mapを入れ替える
+			mapN[x] = pos + 1
+			mapN[tmp] = pos
+		}
+	}
+
+	for i := 0; i < n; i++ {
+		if i == 0 {
+			fmt.Print(arrN[i])
+		} else {
+			fmt.Print(" ")
+			fmt.Print(arrN[i])
+		}
+	}
+	fmt.Println()
 }
