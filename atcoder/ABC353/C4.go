@@ -127,20 +127,24 @@ func main() {
 		arrA[i] = io.NextInt()
 	}
 
+	//昇順にソート
 	sort.Ints(arrA)
 
+	//配列の要素に対して計算を実行
 	ans := 0
 	b := 0
 	for i, a := range arrA {
 		ans += a * (n - 1)
 		t := mod - a
-		ass := arrA[i+1:]
+		ass := arrA[i+1:] //i版明光の要素のみからなる部分配列を取得
 		p := sort.Search(len(ass), func(j int) bool {
-			return t <= ass[j]
+			return t <= ass[j] //条件を満たす要素のインデックスを探索
 		})
-		b += len(ass) - p
+		b += len(ass) - p //条件を満たす要素の数を加算
 	}
-	ans -= mod * b
+	//最終的な結果の計算
+	ans -= mod * b //モジュロの値と条件を満たす要素の数を掛け算して減算
 
+	//結果の出力
 	fmt.Println(ans)
 }
