@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"sort"
 	"strconv"
 	"strings"
 )
@@ -114,37 +113,67 @@ func intMax(a, b int) int {
 	return b
 }
 
-// 正解
 func main() {
 	//決まり文句
 	io := NewIo()
 	defer io.Flush()
 
-	mod := 100000000
-	n := io.NextInt()
-	arrA := make([]int, n)
-	for i := 0; i < n; i++ {
-		arrA[i] = io.NextInt()
+	s := io.NextLine()
+	t := io.NextLine()
+
+	_, arrS := runLengthEncode(s)
+	_, arrT := runLengthEncode(t)
+
+	if len(arrS) != len(arrT) {
+		fmt.Println("No")
+		return
 	}
-
-	//昇順にソート
-	sort.Ints(arrA)
-
-	//配列の要素に対して計算を実行
-	ans := 0
-	b := 0
-	for i, a := range arrA {
-		ans += a * (n - 1)
-		t := mod - a
-		ass := arrA[i+1:] //i番目以降の要素のみからなる部分配列を取得
-		p := sort.Search(len(ass), func(j int) bool {
-			return t <= ass[j] //条件を満たす要素のインデックスを探索
-		})
-		b += len(ass) - p //条件を満たす要素の数を加算
+	for i := 0; i < len(arrS); i++ {
+		if arrS[i][0] != arrT[i][0] {
+			fmt.Println("No")
+			return
+		}
+		if arrS[i][1] == arrT[i][1] {
+			continue
+		}
+		if arrS[i][1] > arrT[i][1] {
+			fmt.Println("No")
+			return
+		}
+		if arrS[i][1] == 1 && arrS[i][1] < arrT[i][1] {
+			fmt.Println("No")
+			return
+		}
 	}
-	//最終的な結果の計算
-	ans -= mod * b //モジュロの値と条件を満たす要素の数を掛け算して減算
+	fmt.Println("Yes")
+}
 
-	//結果の出力
-	fmt.Println(ans)
+func runLengthEncode(s string) (string, [][]int) {
+	ret := make([]byte, 0)
+	ret2 := make([][]int, 0)
+	cnt := 0
+	t := []int{0, 0}
+	for i := 0; i < len(s); i++ {
+		if i == 0 {
+			ret = append(ret, s[i])
+			t[0] = int(s[i])
+			cnt++
+			continue
+		}
+		if s[i] == s[i-1] {
+			cnt++
+			continue
+		}
+		ret = append(ret, []byte(strconv.Itoa(cnt))...)
+		t[1] = cnt
+		ret2 = append(ret2, t)
+		t = []int{int(s[i]), 0}
+		cnt = 1
+		ret = append(ret, s[i])
+	}
+	ret = append(ret, []byte(strconv.Itoa(cnt))...)
+	t[1] = cnt
+	ret2 = append(ret2, t)
+
+	return string(ret), ret2
 }
