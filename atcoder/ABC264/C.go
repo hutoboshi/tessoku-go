@@ -163,13 +163,14 @@ func main() {
 			//AとBの要素が対応するかどうかチェック
 			for k := 0; k < h2; k++ {
 				for l := 0; l < w2; l++ {
-					if arrA[tmp_v[k]][tmp_y[l]] != arrB[k][l] {
-						match = false
-						break
+					if arrA[tmp_v[k]][tmp_y[l]] != arrB[k][l] { //対応する要素が異なる場合
+						match = false //マッチしないと判定
+						break         //内側のループを抜ける
 					}
 				}
 			}
 
+			//全ての要素が対応していればマッチフラグを垂れて
 			if match {
 				r = true
 				break
@@ -180,6 +181,7 @@ func main() {
 		}
 	}
 
+	//結果を出力
 	if r {
 		fmt.Println("Yes")
 	} else {
