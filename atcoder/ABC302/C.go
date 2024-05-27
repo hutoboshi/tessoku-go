@@ -161,5 +161,5 @@ func rec(ss []string, i int) bool {
 			}
 		}
 	}
-	return true
+	return false
 }
