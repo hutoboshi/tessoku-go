@@ -114,8 +114,9 @@ func intMax(a, b int) int {
 	return b
 }
 
-type Flavor struct {
-	top1, top2 int
+type Ice struct {
+	f int
+	s int
 }
 
 func main() {
@@ -124,19 +125,21 @@ func main() {
 	defer io.Flush()
 
 	n := io.NextInt()
-	arrF := make([]Flavor, n)
+	I := make([]Ice, n)
 	for i := 0; i < n; i++ {
-		f := io.NextInt() - 1
-		s := io.NextInt()
-		if arrF[f].top1 <= s {
-			arrF[f].top2 = arrF[f].top1
-			arrF[f].top1 = s
-		} else if arrF[f].top2 < s {
-			arrF[f].top2 = s
+		I[i].f = io.NextInt()
+		I[i].s = io.NextInt()
+	}
+	sort.Slice(I, func(i, j int) bool {
+		return I[i].s > I[j].s
+	})
+	ans := 0
+	for i := 1; i < n; i++ {
+		if I[0].f == I[i].f {
+			ans = intMax(ans, I[0].s+I[i].s/2)
+		} else {
+			ans = intMax(ans, I[0].s+I[i].s)
 		}
 	}
-
-	sort.Slice(arrF,func(i,j int)bool){
-		
-	}
+	fmt.Println(ans)
 }
