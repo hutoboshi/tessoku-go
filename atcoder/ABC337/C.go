@@ -124,13 +124,19 @@ func main() {
 		arrA[i] = io.NextInt()
 	}
 
-	retu := make([]int, n)
+	mapA := make(map[int]int)
 	for i, v := range arrA {
-		if v == -1 {
-			retu[0] = i
-		} else {
-			retu[v] = i
-		}
+		mapA[v] = i + 1
 	}
-	fmt.Println(retu)
+	key := -1
+	ans := make([]int, 0)
+	for i := 0; i < n; i++ {
+		ans = append(ans, mapA[key])
+		key = mapA[key]
+	}
+
+	for _, v := range ans {
+		fmt.Print(v, " ")
+	}
+	fmt.Println()
 }
