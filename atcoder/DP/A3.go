@@ -131,9 +131,9 @@ func main() {
 		arrH[i] = io.NextInt()
 	}
 
-	dp := make([]int, n+2)
+	dp := make([]int, n)
 	dp[0] = 0
-	for i := 1; i < n+2; i++ {
+	for i := 1; i < n; i++ {
 		dp[i] = 1 << 60
 	}
 
@@ -146,4 +146,5 @@ func main() {
 		}
 	}
 	fmt.Println(dp[n-1])
+	// fmt.Println(dp)
 }
