@@ -123,19 +123,14 @@ func main() {
 	tx := io.NextInt()
 	ty := io.NextInt()
 
-	ans := 0
-	tate := abs(sy - ty)
-	ans += tate
-
-	if tate == 0 {
-		yoko := abs(sx - tx)
-		if sy%2 == 0 {
-			ans += yoko / 2
-		} else {
-			ans += yoko / 2
-		}
+	if sx%2 != sy%2 {
+		sx--
+	}
+	if tx%2 != ty%2 {
+		tx--
 	}
 
+	ans := intMax(abs(ty-sy), (abs(ty-sy)+abs(tx-sx))/2)
 	fmt.Println(ans)
 }
 
