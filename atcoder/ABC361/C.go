@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -118,4 +119,26 @@ func main() {
 	io := NewIo()
 	defer io.Flush()
 
+	n := io.NextInt()
+	k := io.NextInt()
+	arrA := make([]int, n)
+	for i := 0; i < n; i++ {
+		arrA[i] = io.NextInt()
+	}
+	sort.Ints(arrA)
+
+	// sumarr := make([]int, n)
+	// sumarr[0] = arrA[0]
+	// for i := 1; i < n; i++ {
+	// 	sumarr[i] = arrA[i] + sumarr[i-1]
+	// }
+
+	index := n - k - 1
+	ans := 999999999
+	for i := index; i < n; i++ {
+		// fmt.Println(arrA[i], arrA[i-index])
+		ans = intMin(ans, arrA[i]-arrA[i-index])
+	}
+	// fmt.Println(arrA)
+	fmt.Println(ans)
 }

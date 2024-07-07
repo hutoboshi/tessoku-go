@@ -118,4 +118,19 @@ func main() {
 	io := NewIo()
 	defer io.Flush()
 
+	n := io.NextInt()
+	k := io.NextInt()
+	x := io.NextInt()
+	arrA := make([]int, n)
+	for i := 0; i < n; i++ {
+		arrA[i] = io.NextInt()
+	}
+
+	for i, v := range arrA {
+		fmt.Print(v, " ")
+		if i == k-1 {
+			fmt.Print(x, " ")
+		}
+	}
+	fmt.Println()
 }
