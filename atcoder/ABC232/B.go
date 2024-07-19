@@ -125,7 +125,7 @@ func main() {
 	for i := 0; i < 26; i++ {
 		ok := true
 		for j, ss := range s {
-			ts := rune(int(ss-'a')+i%26) + 'a'
+			ts := rune((int(ss-'a')+i)%26) + 'a'
 			if ts != tt[j] {
 				ok = false
 			}
