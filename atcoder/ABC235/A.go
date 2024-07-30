@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"slices"
 	"strconv"
 	"strings"
 )
@@ -119,40 +118,10 @@ func main() {
 	io := NewIo()
 	defer io.Flush()
 
-	n := io.NextInt()
-	q := io.NextInt()
+	abc := io.NextLine()
 
-	arrA := make([]int, n)
-	for i := 0; i < n; i++ {
-		arrA[i] = io.NextInt()
-	}
-	arrB := make([]int, q)
-	arrK := make([]int, q)
-	for i := 0; i < q; i++ {
-		arrB[i] = io.NextInt()
-		arrK[i] = io.NextInt()
-	}
-
-	slices.Sort(arrA)
-
-	for i := 0; i < q; i++ {
-		d0 := -1
-		d1 := 2_000_000_00
-		for {
-			d := (d0 + d1) / 2
-			left := arrB[i] - d
-			right := arrB[i] + d
-			idxL, _ := slices.BinarySearch(arrA, left)
-			idxR, _ := slices.BinarySearch(arrA, right+1)
-			if idxR-idxL < arrK[i] {
-				d0 = d
-			} else {
-				d1 = d
-			}
-			if d0+1 >= d1 {
-				fmt.Println(d1)
-				break
-			}
-		}
-	}
+	a1, _ := strconv.Atoi(string(abc[0]) + string(abc[1]) + string(abc[2]))
+	a2, _ := strconv.Atoi(string(abc[1]) + string(abc[2]) + string(abc[0]))
+	a3, _ := strconv.Atoi(string(abc[2]) + string(abc[0]) + string(abc[1]))
+	fmt.Println(a1 + a2 + a3)
 }

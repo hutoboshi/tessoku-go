@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"slices"
 	"strconv"
 	"strings"
 )
@@ -120,39 +119,19 @@ func main() {
 	defer io.Flush()
 
 	n := io.NextInt()
-	q := io.NextInt()
-
-	arrA := make([]int, n)
+	arrH := make([]int, n)
 	for i := 0; i < n; i++ {
-		arrA[i] = io.NextInt()
-	}
-	arrB := make([]int, q)
-	arrK := make([]int, q)
-	for i := 0; i < q; i++ {
-		arrB[i] = io.NextInt()
-		arrK[i] = io.NextInt()
+		arrH[i] = io.NextInt()
 	}
 
-	slices.Sort(arrA)
-
-	for i := 0; i < q; i++ {
-		d0 := -1
-		d1 := 2_000_000_00
-		for {
-			d := (d0 + d1) / 2
-			left := arrB[i] - d
-			right := arrB[i] + d
-			idxL, _ := slices.BinarySearch(arrA, left)
-			idxR, _ := slices.BinarySearch(arrA, right+1)
-			if idxR-idxL < arrK[i] {
-				d0 = d
-			} else {
-				d1 = d
-			}
-			if d0+1 >= d1 {
-				fmt.Println(d1)
-				break
-			}
+	max := arrH[0]
+	for i := 1; i < n; i++ {
+		if max < arrH[i] {
+			max = arrH[i]
+		} else {
+			break
 		}
 	}
+
+	fmt.Println(max)
 }

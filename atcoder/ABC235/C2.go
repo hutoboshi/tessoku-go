@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"slices"
 	"strconv"
 	"strings"
 )
@@ -126,33 +125,37 @@ func main() {
 	for i := 0; i < n; i++ {
 		arrA[i] = io.NextInt()
 	}
-	arrB := make([]int, q)
+
+	arrX := make([]int, q)
 	arrK := make([]int, q)
 	for i := 0; i < q; i++ {
-		arrB[i] = io.NextInt()
+		arrX[i] = io.NextInt()
 		arrK[i] = io.NextInt()
 	}
 
-	slices.Sort(arrA)
-
-	for i := 0; i < q; i++ {
-		d0 := -1
-		d1 := 2_000_000_00
-		for {
-			d := (d0 + d1) / 2
-			left := arrB[i] - d
-			right := arrB[i] + d
-			idxL, _ := slices.BinarySearch(arrA, left)
-			idxR, _ := slices.BinarySearch(arrA, right+1)
-			if idxR-idxL < arrK[i] {
-				d0 = d
-			} else {
-				d1 = d
-			}
-			if d0+1 >= d1 {
-				fmt.Println(d1)
-				break
-			}
+	mA := make(map[int][]int)
+	for i, v := range arrA {
+		if _, ok := mA[v]; ok {
+			mA[v] = append(mA[v], i+1)
+		} else {
+			mA[v] = make([]int, 0)
+			mA[v] = append(mA[v], i+1)
 		}
 	}
+
+	// fmt.Println(mA)
+
+	for i := 0; i < q; i++ {
+		if v, ok := mA[arrX[i]]; ok {
+			if len(v) >= arrK[i] {
+				fmt.Println(mA[arrX[i]][arrK[i]-1])
+			} else {
+				fmt.Println(-1)
+			}
+		} else {
+			fmt.Println(-1)
+		}
+	}
+
+	// fmt.Println(mA)
 }
