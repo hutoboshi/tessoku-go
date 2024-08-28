@@ -119,17 +119,15 @@ func main() {
 	defer io.Flush()
 
 	n := io.NextInt()
-	k := io.NextInt() - 1
+	k := io.NextInt()
 	arrA := make([]int, n)
 	for i := 0; i < n; i++ {
 		arrA[i] = io.NextInt()
 	}
 
-	for i := k; i < n; i++ {
-		fmt.Print(arrA[i], " ")
-	}
-	for i := 0; i < k; i++ {
-		fmt.Print(arrA[i], " ")
-	}
-	fmt.Println()
+	s1 := fmt.Sprint(arrA[n-k:])
+	s2 := fmt.Sprint(arrA[:n-k])
+	// fmt.Println(s1)
+	// fmt.Println(s2)
+	fmt.Println(s1[1:len(s1)-1] + " " + s2[1:len(s2)-1])
 }
