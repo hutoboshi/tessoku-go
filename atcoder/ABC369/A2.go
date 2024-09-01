@@ -118,23 +118,16 @@ func main() {
 	io := NewIo()
 	defer io.Flush()
 
-	N := io.NextInt()
-	A := make([]int, N)
-	for i := 0; i < N; i++ {
-		A[i] = io.NextInt()
-	}
-	d := make([]int, N-1)
-	for i := 0; i < N-1; i++ {
-		d[i] = A[i+1] - A[i]
-	}
-	combo, ans := 0, N
-	for i := 0; i < N-1; i++ {
-		if i > 0 && d[i] == d[i-1] {
-			combo += 1
+	A := io.NextInt()
+	B := io.NextInt()
+
+	if A == B {
+		fmt.Println(1)
+	} else {
+		if (A+B)%2 == 0 {
+			fmt.Println(3)
 		} else {
-			combo = 1
+			fmt.Println(2)
 		}
-		ans += combo
 	}
-	fmt.Println(ans)
 }

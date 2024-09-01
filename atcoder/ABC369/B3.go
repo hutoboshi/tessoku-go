@@ -113,28 +113,34 @@ func intMax(a, b int) int {
 	return b
 }
 
+func abs(n int) int {
+	if n < 0 {
+		return -n
+	}
+	return n
+}
+
 func main() {
 	//決まり文句
 	io := NewIo()
 	defer io.Flush()
 
 	N := io.NextInt()
-	A := make([]int, N)
+	l, r, ans := -1, -1, 0
 	for i := 0; i < N; i++ {
-		A[i] = io.NextInt()
-	}
-	d := make([]int, N-1)
-	for i := 0; i < N-1; i++ {
-		d[i] = A[i+1] - A[i]
-	}
-	combo, ans := 0, N
-	for i := 0; i < N-1; i++ {
-		if i > 0 && d[i] == d[i-1] {
-			combo += 1
+		A := io.NextInt()
+		S := io.Next()
+		if S == "L" {
+			if l != -1 {
+				ans += abs(A - l)
+			}
+			l = A
 		} else {
-			combo = 1
+			if r != -1 {
+				ans += abs(A - r)
+			}
+			r = A
 		}
-		ans += combo
 	}
 	fmt.Println(ans)
 }

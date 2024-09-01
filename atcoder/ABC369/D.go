@@ -113,6 +113,8 @@ func intMax(a, b int) int {
 	return b
 }
 
+const INF = 1e18
+
 func main() {
 	//決まり文句
 	io := NewIo()
@@ -123,18 +125,19 @@ func main() {
 	for i := 0; i < N; i++ {
 		A[i] = io.NextInt()
 	}
-	d := make([]int, N-1)
-	for i := 0; i < N-1; i++ {
-		d[i] = A[i+1] - A[i]
+
+	dp := make([][2]int, N+1)
+	for i := 0; i <= N; i++ {
+		dp[i][0] = 0
+		dp[i][1] = -INF
 	}
-	combo, ans := 0, N
-	for i := 0; i < N-1; i++ {
-		if i > 0 && d[i] == d[i-1] {
-			combo += 1
-		} else {
-			combo = 1
+
+	for i := 0; i < N; i++ {
+		for j := 0; j < 2; j++ {
+			dp[i+1][j] = intMax(dp[i+1][j], dp[i][j])
+			dp[i+1][1-j] = intMax(dp[i+1][1-j], dp[i][j]+A[i]*(j+1))
 		}
-		ans += combo
 	}
-	fmt.Println(ans)
+
+	fmt.Println(intMax(dp[N][0], dp[N][1]))
 }
