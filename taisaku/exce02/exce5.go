@@ -1,3 +1,5 @@
+//フィボナッチ数列
+
 package main
 
 import (
