@@ -1,12 +1,12 @@
-// 幅優先探索
-// 138 D
+// 深さ優先探索
+// ABC213 D
 package main
 
 import (
 	"bufio"
-	"container/list"
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -116,46 +116,8 @@ func intMax(a, b int) int {
 	return b
 }
 
-// deque
-type Deque struct {
-	list *list.List
-}
-
-func NewDeque() *Deque {
-	return &Deque{
-		list: list.New(),
-	}
-}
-
-func (d *Deque) PushFront(item interface{}) {
-	d.list.PushFront(item)
-}
-
-func (d *Deque) PushBack(item interface{}) {
-	d.list.PushBack(item)
-}
-
-func (d *Deque) PopFront() interface{} {
-	if d.list.Len() == 0 {
-		return nil
-	}
-	front := d.list.Front()
-	d.list.Remove(front)
-	return front.Value
-}
-
-func (d *Deque) PopBack() interface{} {
-	if d.list.Len() == 0 {
-		return nil
-	}
-	back := d.list.Back()
-	d.list.Remove(back)
-	return back.Value
-}
-
-func (d *Deque) Len() int {
-	return d.list.Len()
-}
+var arrG [][]int
+var ans []int
 
 func main() {
 	//決まり文句
@@ -163,61 +125,48 @@ func main() {
 	defer io.Flush()
 
 	n := io.NextInt()
-	q := io.NextInt()
 	arrA := make([]int, n-1)
 	arrB := make([]int, n-1)
 	for i := 0; i < n-1; i++ {
 		arrA[i] = io.NextInt()
 		arrB[i] = io.NextInt()
 	}
-	arrP := make([]int, q)
-	arrX := make([]int, q)
-	for i := 0; i < q; i++ {
-		arrP[i] = io.NextInt()
-		arrX[i] = io.NextInt()
+
+	arrG = make([][]int, n+1)
+	for i := range arrG {
+		arrG[i] = make([]int, 0)
 	}
 
-	//行き先リスト作成
-	connect := make([][]int, n+1)
-	for i := 0; i <= n; i++ {
-		connect[i] = make([]int, 0)
-	}
+	//辺の情報arrA,arrBから隣接リストを作成
 	for i := 0; i < n-1; i++ {
-		connect[arrA[i]] = append(connect[arrA[i]], arrB[i])
-		connect[arrB[i]] = append(connect[arrB[i]], arrA[i])
+		arrG[arrA[i]] = append(arrG[arrA[i]], arrB[i])
+		arrG[arrB[i]] = append(arrG[arrB[i]], arrA[i])
 	}
 
-	//各頂点のカウンターを作成
-	counter := make([]int, n+1)
-	for i := 0; i < q; i++ {
-		counter[arrP[i]] += arrX[i]
+	//各頂点の隣接をソートする（小さい順に回るため）
+	for i := range arrG {
+		sort.Ints(arrG[i])
 	}
 
-	//dequeを用意
-	deque := NewDeque()
+	//深さ優先探索を実行して結果を出力する
+	dfs(1, -1)
 
-	//スタート地点を格納
-	deque.PushBack(1)
+	for _, val := range ans {
+		fmt.Print(val, " ")
+	}
 
-	//訪問済みチェックリストを作成
-	visited := make([]bool, n+1)
-	visited[1] = true
+	fmt.Println()
+}
 
-	for deque.Len() > 0 {
-		now := deque.PopFront().(int)
-		now_number := counter[now]
+func dfs(crr, pre int) {
+	//現在の頂点を結果に追加
+	ans = append(ans, crr)
 
-		for _, to := range connect[now] {
-			if visited[to] == false {
-				counter[to] += now_number
-				visited[to] = true
-				deque.PushBack(to)
-			}
+	//隣接する各頂点について再帰的に探索する
+	for _, nxt := range arrG[crr] {
+		if nxt != pre {
+			dfs(nxt, crr)
+			ans = append(ans, crr)
 		}
 	}
-
-	for i := 1; i <= n; i++ {
-		fmt.Print(counter[i], " ")
-	}
-	fmt.Println()
 }
