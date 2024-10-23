@@ -118,4 +118,5 @@ func main() {
 	io := NewIo()
 	defer io.Flush()
 
+	fmt.Println("test")
 }
