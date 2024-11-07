@@ -31,6 +31,7 @@ func main() {
 	fmt.Println(count)
 }
 
+// ３が含まれているか
 func countainsDigtThree(n int) bool {
 	return strings.Contains(strconv.Itoa(n), "3")
 }
